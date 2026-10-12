@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Habits - Task & Habit Tracker</title>
+
+     <!-- Import google fonts --> 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Quicksand:wght@600&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../styles/shared.css"/>
     <link rel="stylesheet" href="../styles/habits.css" />
   </head>
   <body>
@@ -12,7 +19,7 @@
       <header class="header">
         <div class="header-content">
           <div class="brand">
-            <h1>Task &amp; Habit Tracker</h1>
+            <h1 class="app-title">Task &amp; Habit Tracker</h1>
             <p>Manage your tasks and build lasting habits with analytics and custom rules</p>
           </div>
           <button class="theme-button" id="theme-button" type="button" aria-label="Change theme">
@@ -20,10 +27,18 @@
           </button>
         </div>
         <nav class="navigation">
-          <a href="dashboard.html" class="nav-link"><img src="../assets/dashboard_icon-light.svg" alt="">Dashboard</a>
-          <a href="tasks.html" class="nav-link"><img src="../assets/Task_icon-light.svg" alt="">Tasks</a>
-          <a href="habits.html" class="nav-link active" aria-current="page"><img src="../assets/habbit_icon-light.svg" alt="">Habits</a>
-          <a href="rules.html" class="nav-link"><img src="../assets/rule_icon-light.svg" alt="">Rules</a>
+          <a href="dashboard.html" class="nav-link"><img src="../assets/dashboard_icon-light.svg" alt="">
+            <span>Dashboard</span>
+          </a>
+          <a href="tasks.html" class="nav-link"><img src="../assets/Task_icon-light.svg" alt="">
+            <span>Tasks</span>
+          </a>
+          <a href="habits.html" class="nav-link active" aria-current="page"><img src="../assets/habbit_icon-light.svg" alt="">
+            <span>Habits</span>
+          </a>
+          <a href="rules.html" class="nav-link"><img src="../assets/rule_icon-light.svg" alt="">
+            <span>Rules</span>
+          </a>
         </nav>
       </header>
 
@@ -53,7 +68,7 @@
         </section>
 
         <section class="task-heading">
-          <h2>Habits</h2>
+          <h2 class="app-title">Habits</h2>
           <div class="task-actions">
             <div class="search-box">
               <img src="../assets/search_icon.svg" alt="" class="inline-icon">
@@ -184,7 +199,7 @@
       <span class="toast-message" id="toast-message"></span>
       <button class="toast-dismiss" id="toast-dismiss" type="button" aria-label="Dismiss notification"><img src="../assets/close_icon.svg" alt=""></button>
     </div>
-    <script src="../logic/habits.js"></script>
     <script src="../logic/integration.js"></script>
+    <script src="../logic/habits.js"></script>
   </body>
 </html>

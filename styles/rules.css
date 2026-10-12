@@ -1,125 +1,360 @@
-@import url("shared.css");
+/* Custom variables scoped directly to our components to bypass legacy dependencies */
+:root {
+  --primary-color: #54bd95;
+  --primary-hover: #265e4b;
+  --page-background: #fff;
+  --card-background: #fff;
+  --text-primary: #0a0a0a;
+  --text-secondary: #717182;
+  --border-color: #e2e2e2;
+  --danger-color: #ed3150;
+  --muted-background: #f0f1f3;
+  --card-radius: 14px;
+  --green-color: #55bd9b;
+  --red-color: #ed3150;
+  --blue-color: #6489e8;
+  --orange-color: #f0a14a;
+}
+
+/* Dark layout overrides that mirror our app's global tracking state */
+body[data-theme="dark"] {
+  --page-background: #090909;
+  --card-background: #111111;
+  --text-primary: #f2f3f5;
+  --text-secondary: #a1a5b0;
+  --border-color: #373a43;
+  --muted-background: #2b2e35;
+  --primary-hover: #55bd9b30;
+}
+
+/* Universal box layout fixes for layout margins across different views */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--page-background);
+  color: var(--text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--page-background);
+}
+
+/* Header typography spacing rules to keep branding aligned */
+.header {
+  padding-top: 33.99px;
+  padding-left: 28.88px;
+  padding-right: 28.88px;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0px;
+}
+
+.brand p {
+  margin-top: 13px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Config rules for the light/dark theme switch control square */
+.theme-button {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-background);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.theme-button:hover {
+  background: var(--muted-background);
+}
+
+#theme-icon {
+  display: grid;
+  place-items: center;
+}
+
+.theme-icon-image {
+  display: block;
+  width: 19px;
+  height: 19px;
+  object-fit: contain;
+}
+
+/* Navigation bar alignment configurations */
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  margin-top: 27px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  color: var(--text-primary);
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.nav-link img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.nav-link span {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* Navigation animation triggers on hover */
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-link:hover img {
+  transform: translateY(-2px);
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+.nav-link:hover span {
+  transform: translateY(-2px);
+}
+
+/* Active navigation states—using specific routing matrices to ensure compatibility with dark backgrounds */
+.nav-link.active {
+  color: var(--primary-color);
+}
+
+.nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+.nav-link.active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--primary-color);
+  content: "";
+}
+
+/* Dark mode corrections to map image elements into high-contrast inverted white */
+body[data-theme="dark"] .nav-link img {
+  filter: brightness(0) invert(1);
+}
+
+body[data-theme="dark"] .nav-link:hover img,
+body[data-theme="dark"] .nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+/* Layout definitions for main workflow sections */
+.main-content {
+  padding-top: 33.99px;
+  padding-left: 28.88px;
+  padding-right: 28.88px;
+}
+
 .toolbar,
 .page-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin: 28px 0 20px;
+  margin: 24px 0 20px;
 }
+
 .toolbar h2,
 .page-title h2 {
   margin: 0 0 6px;
   font-size: 24px;
+  font-weight: 500;
 }
+
 .toolbar p,
-.page-title p,
-.panel-heading p {
+.page-title p {
   margin: 0;
-  color: var(--muted);
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
-.primary-button,
-.secondary-button {
-  border: 1px solid transparent;
-  border-radius: 7px;
-  padding: 10px 15px;
-  font: inherit;
-  cursor: pointer;
-}
-.primary-button {
-  background: var(--primary);
-  color: white;
-}
-.primary-button:hover {
-  filter: brightness(0.95);
-}
-.secondary-button {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
-}
+
+/* Control filter panel layout wrapping rules */
 .filters {
   display: flex;
   gap: 14px;
   align-items: end;
   flex-wrap: wrap;
-  padding: 15px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 14px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  background: var(--card-background);
 }
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--muted);
-}
-input,
-select,
-textarea {
-  font: inherit;
-  color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px;
-  min-width: 0;
-}
-input:focus,
-select:focus,
-textarea:focus {
-  outline: 2px solid color-mix(in srgb, var(--primary) 25%, transparent);
-  border-color: var(--primary);
-}
+
 .filters input {
   min-width: 220px;
 }
+
 .rules-list {
   display: grid;
   gap: 12px;
   margin-top: 20px;
 }
+
+/* Form component input alignment models */
+input,
+select,
+textarea {
+  font: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-primary);
+  padding: 10px;
+  min-width: 0;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  border-color: var(--primary-color);
+}
+
+.primary-button,
+.secondary-button {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 0 17px;
+  font: inherit;
+  font-size: 14px;
+  min-height: 43px;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.primary-button:hover {
+  background: var(--primary-hover);
+}
+
+.secondary-button {
+  background: var(--card-background);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.secondary-button:hover {
+  background: var(--muted-background);
+}
+
+.icon-button,
+.order-button {
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: var(--card-background);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.icon-button {
+  font-size: 22px;
+  width: 32px;
+  height: 32px;
+}
+
+.order-button {
+  width: 28px;
+  height: 27px;
+}
+
+.action-button {
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 5px;
+}
+
+.action-button:hover {
+  color: var(--primary-color);
+}
+
+/* Card item grid formatting */
 .rule-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 9px;
+  border: 1px solid var(--border-color);
+  background: var(--card-background);
+  border-radius: var(--card-radius);
   padding: 16px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 14px;
   align-items: start;
 }
+
 .priority-controls {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.icon-button,
-.order-button {
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-}
-.order-button {
-  width: 28px;
-  height: 27px;
-}
+
 .rule-title-line {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
+
 .rule-title-line h3 {
   margin: 0;
   font-size: 16px;
 }
+
 .rule-description {
   margin: 7px 0;
-  color: var(--muted);
+  color: var(--text-secondary);
   font-size: 13px;
 }
+
 .rule-logic {
   display: flex;
   gap: 8px;
@@ -127,45 +362,48 @@ textarea:focus {
   flex-wrap: wrap;
   font-size: 13px;
 }
+
+/* Pill badge style configuration controls */
 .logic-pill,
 .hit-pill,
 .status-pill {
   padding: 5px 9px;
   border-radius: 999px;
-  background: var(--soft);
-  color: var(--text);
+  background: var(--muted-background);
+  color: var(--text-primary);
   font-size: 12px;
 }
+
 .hit-pill {
   background: #fff1d6;
   color: #9a6200;
 }
+
+body[data-theme="dark"] .hit-pill {
+  background: #48371b;
+  color: #ffd27b;
+}
+
 .rule-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.action-button {
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  padding: 5px;
-}
-.action-button:hover {
-  color: var(--primary);
-}
+
+/* Inline checkbox slider switch framework */
 .switch {
   position: relative;
   width: 38px;
   height: 22px;
   display: inline-block;
 }
+
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 .switch span {
   position: absolute;
   inset: 0;
@@ -174,6 +412,7 @@ textarea:focus {
   cursor: pointer;
   transition: 0.2s;
 }
+
 .switch span:before {
   content: "";
   position: absolute;
@@ -185,28 +424,41 @@ textarea:focus {
   border-radius: 50%;
   transition: 0.2s;
 }
+
 .switch input:checked + span {
-  background: var(--primary);
+  background: var(--primary-color);
 }
+
 .switch input:checked + span:before {
   transform: translateX(16px);
 }
+
+/* Default empty list formatting views */
 .empty-state {
   text-align: center;
   padding: 65px 20px;
-  color: var(--muted);
+  color: var(--text-secondary);
+  min-height: 300px;
 }
+
 .empty-state[hidden] {
   display: none;
 }
+
 .empty-icon {
   font-size: 35px;
-  color: var(--primary);
+  color: var(--primary-color);
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 12px;
 }
+
 .empty-state h3 {
-  color: var(--text);
+  color: var(--text-primary);
   margin: 10px 0;
 }
+
+/* Dialogue window screen positioning setup */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -216,70 +468,74 @@ textarea:focus {
   padding: 18px;
   z-index: 20;
 }
+
 .modal-backdrop[hidden] {
   display: none;
 }
+
 .modal {
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background: var(--card-background);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
   width: min(620px, 100%);
   max-height: 90vh;
   overflow: auto;
   padding: 22px;
   box-shadow: 0 20px 60px #0002;
 }
+
 .modal-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
 }
+
 .modal-heading h2 {
   margin: 0;
   font-size: 20px;
 }
-.icon-button {
-  font-size: 22px;
-  width: 32px;
-  height: 32px;
-}
+
 .modal form {
   display: grid;
   gap: 15px;
 }
-.modal label {
-  font-size: 13px;
-}
+
 .form-section {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 14px;
   display: grid;
   gap: 12px;
 }
+
 .form-section h3 {
   font-size: 14px;
   margin: 0;
-  color: var(--text);
+  color: var(--text-primary);
 }
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
 .helper {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-secondary);
   margin: 0;
 }
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 9px;
   margin-top: 4px;
 }
+
+/* Alert notifications container framework */
 .toast {
   position: fixed;
   right: 20px;
@@ -295,85 +551,13 @@ textarea:focus {
   transition: 0.2s;
   pointer-events: none;
 }
+
 .toast.show {
   opacity: 1;
   transform: translateY(0);
 }
-body[data-theme="dark"] .hit-pill {
-  background: #48371b;
-  color: #ffd27b;
-}
-/* Match the rounded controls, spacing, and colors used by Tasks and Habits. */
-.toolbar {
-  margin: 24px 0 20px;
-}
-.toolbar h2 {
-  font-weight: 500;
-}
-.toolbar p {
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-.primary-button,
-.secondary-button {
-  min-height: 43px;
-  border-radius: 5px;
-  padding: 0 17px;
-  font-size: 14px;
-}
-.primary-button {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-}
-.primary-button:hover {
-  background: var(--primary-hover);
-}
-.secondary-button {
-  background: var(--card-background);
-  border-color: var(--border-color);
-  color: var(--text-primary);
-}
-.filters {
-  padding: 14px 18px;
-  border: 1px solid var(--border-color);
-  border-radius: 15px;
-  background: var(--card-background);
-}
-input,
-select,
-textarea {
-  border-color: var(--border-color);
-  border-radius: 6px;
-  background: var(--card-background);
-  color: var(--text-primary);
-}
-.rule-card {
-  border-radius: var(--card-radius);
-  background: var(--card-background);
-}
-.empty-state {
-  min-height: 300px;
-  color: var(--text-secondary);
-  text-align: center;
-}
-.empty-icon {
-  width: 62px;
-  height: 62px;
-  margin: 0 auto 12px;
-}
-.modal {
-  border-radius: 14px;
-  background: var(--card-background);
-  color: var(--text-primary);
-}
-.modal-heading,
-.modal-actions {
-  border-color: var(--border-color);
-}
-.toast {
-  border-radius: 8px;
-}
+
+/* Tablet screen layout structural configuration switches */
 @media (max-width: 800px) {
   .toolbar {
     align-items: flex-start;
@@ -400,6 +584,38 @@ textarea {
     gap: 6px;
   }
 }
+
+/* Small smartphone screen aspect overrides */
+@media (max-width: 600px) {
+  .header {
+    padding: 28px 5% 0;
+  }
+  .header-content {
+    gap: 12px;
+  }
+  .brand h1 {
+    font-size: 23px;
+  }
+  .brand p {
+    margin-top: 9px;
+    font-size: 13px;
+  }
+  .navigation {
+    gap: 12px 22px;
+    margin-top: 22px;
+  }
+  .nav-link {
+    gap: 6px;
+    min-height: 40px;
+    font-size: 13px;
+  }
+  .nav-link img {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Micro viewport form component alterations */
 @media (max-width: 500px) {
   .toolbar {
     flex-direction: column;
@@ -426,5 +642,24 @@ textarea {
     width: calc(100% - 24px);
     max-height: 90vh;
     overflow: auto;
+  }
+}
+
+/* Very compact display optimization thresholds */
+@media (max-width: 392px) {
+  .brand h1 {
+    font-size: 20px;
+  }
+  .brand p {
+    max-width: 245px;
+    font-size: 12px;
+  }
+  .theme-button {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+  }
+  .navigation {
+    column-gap: 17px;
   }
 }

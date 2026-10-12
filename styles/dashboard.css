@@ -483,13 +483,29 @@ body[data-theme="dark"] .chart-axis {
 
 /* Dark theme matches common app theme attributes */
 body[data-theme="dark"] {
-  --page-background: #17191d;
-  --card-background: #202329;
+  --page-background: #090909;
+  --card-background: #111111;
   --text-primary: #f2f3f5;
   --text-secondary: #a1a5b0;
   --border-color: #373a43;
   --muted-background: #2b2e35;
   --primary-hover: #55bd9b30;
+}
+
+/* Fix active icon color in dark theme */
+body[data-theme="dark"] .nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+body[data-theme="dark"] .nav-link img {
+  filter: brightness(0) invert(1);
+}
+
+
+body[data-theme="dark"] .nav-link:hover{
+   filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
 }
 
 /* Tablet layout */

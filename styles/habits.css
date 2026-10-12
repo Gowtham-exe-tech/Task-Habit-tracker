@@ -22,7 +22,6 @@
 body {
   background: var(--page-background);
   color: var(--text-primary);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 button,
@@ -63,12 +62,6 @@ a:focus-visible {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-}
-
-.brand h1 {
-  font-size: 27px;
-  font-weight: 500;
-  letter-spacing: -0.5px;
 }
 
 .brand p {
@@ -1055,8 +1048,9 @@ body.dark .date-badge {
   color: #ffffff;
 }
 
+body.dark .inline-icon
+
 body.dark .date-badge .inline-icon,
-body.dark .inline-icon,
 body.dark .nav-link img,
 body.dark .empty-icon img,
 body.dark .close-button img,
@@ -1067,6 +1061,11 @@ body.dark .subtask-action img {
 }
 
 body.dark .nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+body.dark .nav-link:hover img{
   filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
     hue-rotate(107deg) brightness(94%) contrast(88%);
 }
@@ -1379,7 +1378,8 @@ body.dark .subtask-action.subtask-delete img {
 }
 .habit-card-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
   overflow-wrap: anywhere;
 }
 .habit-card-description {
@@ -1415,6 +1415,7 @@ body.dark .subtask-action.subtask-delete img {
 .habit-frequency-badge .inline-icon {
   width: 14px;
   height: 14px;
+  filter: brightness(0);
 }
 .habit-streak-badge strong {
   color: #ed9a35;
