@@ -52,7 +52,10 @@ a:focus-visible {
 
 /* Page header and theme button. */
 .header {
-  padding: 42px 4.2% 0;
+  /* padding: 42px 4.2% 0; */
+    padding-top: 33.99px;
+    padding-left: 28.88px;
+    padding-right: 28.88px;
 }
 
 .header-content {
@@ -142,9 +145,42 @@ a:focus-visible {
   content: "";
 }
 
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-link img {
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover img {
+  transform: translateY(-2px);
+}
+
+.nav-link:hover img {
+  transform: translateY(-2px);
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%) hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+
+.nav-link span {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover span {
+  transform: translateY(-2px);
+}
+
 /* Main page spacing. */
 .main-content {
-  padding: 20px 4.2% 60px;
+  /* padding: 20px 4.2% 60px; */
+    padding-top: 33.99px;
+    padding-left: 28.88px;
+    padding-right: 28.88px;
 }
 
 /* Filters and sorting stay close together and only wrap when needed. */

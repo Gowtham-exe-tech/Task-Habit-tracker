@@ -40,6 +40,7 @@ const themeIcon = document.getElementById("theme-icon");
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   localStorage.setItem("expandedTaskIds", JSON.stringify([...expandedTaskIds]));
+  window.dispatchEvent(new Event("app-data-changed"));
 }
 
 function createId() {
@@ -163,7 +164,17 @@ function saveTask(event) {
   if (editingTaskId !== null) {
     const task = tasks.find((item) => item.id === editingTaskId);
     if (!task) return;
+
+    const previousStatus = task.status;
     Object.assign(task, data);
+
+    if (data.status === "completed") {
+      if (previousStatus !== "completed" || !task.completedAt) {
+        task.completedAt = new Date().toISOString();
+      }
+    } else {
+      delete task.completedAt;
+    }
     showToast('All set! "{task}" updated successfully', task.title);
   } else {
     tasks.push({
@@ -213,6 +224,13 @@ function changeTaskStatus(taskId, status) {
   const task = tasks.find((item) => item.id === taskId);
   if (!task) return;
   task.status = status;
+
+  if (status === "completed") {
+    task.completedAt = new Date().toISOString();
+  } else {
+    delete task.completedAt;
+  }
+
   saveTasks();
   renderTasks();
   showToast("Task status updated successfully");
@@ -658,5 +676,16 @@ if (!clearFiltersButton && filterLeft) {
 if (clearFiltersButton)
   clearFiltersButton.addEventListener("click", resetFilters);
 
+// Listen for global history undo/redo updates to refresh the UI
+
+
 loadTheme();
 renderTasks();
+
+
+window.addEventListener("app-data-changed", () => {
+  // Re-read data array variables from storage following history shifts
+  tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  renderTasks();
+  console.log("Tasks view updated via history rollback.");
+});

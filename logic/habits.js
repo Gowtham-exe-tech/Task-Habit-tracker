@@ -52,6 +52,13 @@ const shortDayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 /* Save the habit list whenever a habit or completion changes. */
 function saveHabits() {
   localStorage.setItem("habits", JSON.stringify(habits));
+  const streaks = habits.map((habit) => ({
+    name: habit.name,
+    streak: getCurrentStreak(habit),
+  }));
+  localStorage.setItem("habitStreaks", JSON.stringify(streaks));
+
+  window.dispatchEvent(new Event("app-data-changed"));
 }
 
 /* IDs make it possible to edit or delete one habit without relying on its position. */
@@ -676,7 +683,20 @@ document.addEventListener("click", (event) => {
 });
 
 
+
+
 /* Initialize saved theme and render any habits already in localStorage. */
 loadTheme();
 updateFrequencyFields();
+saveHabits();
 renderHabits();
+
+// Listen for global history undo/redo updates to refresh the UI
+window.addEventListener("app-data-changed", () => {
+  
+  // Re-read data array variables from storage following history shifts
+  habits = JSON.parse(localStorage.getItem("habits") || "[]");
+  renderHabits();
+  console.log("Habits view updated via history rollback.");
+});
+

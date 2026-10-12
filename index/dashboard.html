@@ -4,106 +4,107 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Task & Habit Tracker</title>
+
+    <!-- Import google fonts --> 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Quicksand:wght@600&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../styles/shared.css"/>
     <link rel="stylesheet" href="../styles/dashboard.css" />
   </head>
   <body>
+    <!-- main page -->
     <div class="page">
+      <!-- header -->
       <header class="header">
         <div class="header-content">
           <div class="brand">
-            <h1>Task &amp; Habit Tracker</h1>
+            <h1 class="app-title">Task &amp; Habit Tracker</h1>
             <p>
               Manage your tasks and build lasting habits with analytics and
               custom rules
             </p>
           </div>
-          <button
-            class="theme-button"
-            id="theme-button"
-            aria-label="Change theme">
-            <img id="theme-image" src="../assets/dark_theme_icon.svg" alt="" />
+
+          <button class="theme-button" id="theme-button" type="button" aria-label="Change theme">
+            <span id="theme-icon">
+              <img id="theme-image" class="theme-icon-image" src="../assets/dark_theme_icon.svg" alt="">
+            </span>
           </button>
         </div>
-        <nav class="navigation">
-          <a class="nav-link active" href="dashboard.html">
-            <img src="../assets/dashboard_icon-light.svg" alt="" />Dashboard
+
+        <!-- navigation -->
+        <nav class="navigation" aria-label="Main navigation">
+          <a href="dashboard.html" class="nav-link active">
+            <img src="../assets/dashboard_icon-light.svg" alt="">
+            <span>Dashboard</span>
           </a>
-          <a class="nav-link" href="tasks.html">
-            <img src="../assets/Task_icon-light.svg" alt="" />Tasks
+          <a href="tasks.html" class="nav-link">
+            <img src="../assets/Task_icon-light.svg" alt="">
+            <span>Tasks</span>
           </a>
-          <a class="nav-link" href="habits.html">
-            <img src="../assets/habbit_icon-light.svg" alt="" />Habits
+          <a href="habits.html" class="nav-link">
+            <img src="../assets/habbit_icon-light.svg" alt="">
+            <span>Habits</span>
           </a>
-          <a class="nav-link" href="rules.html">
-            <img src="../assets/rule_icon-light.svg" alt="" />Rules
+          <a href="rules.html" class="nav-link">
+            <img src="../assets/rule_icon-light.svg" alt="">
+            <span>Rules</span>
           </a>
         </nav>
       </header>
 
+      <!-- dashboard content -->
       <main class="main-content">
-        <div class="page-title">
-          <div>
-            <h2>Dashboard</h2>
-            <p>Here's your productivity at a glance.</p>
-          </div>
-        </div>
-
-        <section class="stats-grid">
+        <section class="stats-grid" aria-label="Productivity summary">
           <article class="stat-card">
-            <div class="stat-icon green">
-              <img src="../assets/Assessts/check-square-regular.svg" alt="" />
-            </div>
-            <div>
-              <p>Tasks completed <span>last 7 days</span></p>
+            <div class="stat-copy">
+              <p>Completed tasks</p>
               <strong id="completed-count">0</strong>
-              <small>Completed in the last week</small>
+              <small>In the last 7 Days</small>
             </div>
+            <img class="stat-icon green" src="../assets/Completed-task_icon.svg" alt="">
           </article>
 
           <article class="stat-card">
-            <div class="stat-icon red">
-              <img src="../assets/Assessts/fluent-mdl2_cancel.svg" alt="" />
-            </div>
-            <div>
+            <div class="stat-copy">
               <p>Overdue tasks</p>
               <strong id="overdue-count">0</strong>
-              <small>Tasks past their due date</small>
+              <small>Total overdue</small>
             </div>
+            <img class="stat-icon red" src="../assets/overdue-task_icon.svg" alt="">
           </article>
 
           <article class="stat-card">
-            <div class="stat-icon blue">
-              <img src="../assets/Assessts/clipboard-list-regular.svg" alt="" />
-            </div>
-            <div>
+            <div class="stat-copy">
               <p>Active habits</p>
               <strong id="active-habits-count">0</strong>
-              <small>Habits you're tracking</small>
+              <small>Now active</small>
             </div>
+            <img class="stat-icon blue" src="../assets/active-habbit_icom.svg" alt="">
           </article>
 
           <article class="stat-card">
-            <div class="stat-icon orange">
-              <img src="../assets/Assessts/fire-regular.svg" alt="" />
-            </div>
-            <div>
-              <p>Longest streak</p>
+            <div class="stat-copy">
+              <p>Longest Streak</p>
               <strong id="longest-streak">0 days</strong>
-              <small id="longest-streak-name">Across all habits</small>
+              <small id="longest-streak-name">All-time record</small>
             </div>
+            <img class="stat-icon orange" src="../assets/long-streek_icon.svg" alt="">
           </article>
         </section>
 
+        <!-- dashboard charts -->
         <section class="charts-grid">
-          <article class="panel">
+          <article class="panel status-panel">
             <div class="panel-heading">
-              <div>
-                <h3>Status overview</h3>
-                <p>Current task distribution</p>
-              </div>
+              <h2>Status Overview</h2>
+              <p>Get a snapshot of the status of your work items.</p>
             </div>
+
             <div class="status-chart">
-              <div class="donut" id="status-donut">
+              <div class="donut" id="status-donut" role="img" aria-label="Task status doughnut chart">
                 <div class="donut-center">
                   <strong id="total-tasks">0</strong>
                   <span>Total tasks</span>
@@ -115,29 +116,24 @@
 
           <article class="panel trend-panel">
             <div class="panel-heading">
-              <div>
-                <h3>Habit completion trend</h3>
-                <p>Habit completions per day · last 7 days</p>
-              </div>
+              <h2>Habit Completion Trend</h2>
+              <p>Track your daily habit completion over the past week.</p>
             </div>
-            <div
-              id="trend-chart"
-              class="trend-chart"
-              role="img"
-              aria-label="Habit completions over the last seven days">
-            </div>
+            <div id="trend-chart" class="trend-chart" role="img" aria-label="Habit completion over the past week"></div>
           </article>
         </section>
 
-        <section class="panel recent-panel">
+        <!-- recent activity -->
+        <!-- <section class="panel recent-panel">
           <div class="panel-heading">
             <div>
-              <h3>Recent activity</h3>
-              <p>Latest tasks and habits from your tracker</p>
+              <h2>Recent Activity</h2>
+              <p>Latest tasks and habits from your tracker.</p>
             </div>
+            <button class="secondary-button" id="refresh-dashboard" type="button">Refresh</button>
           </div>
           <div id="recent-activity" class="recent-list"></div>
-        </section>
+        </section> -->
       </main>
     </div>
 

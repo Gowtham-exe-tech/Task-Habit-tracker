@@ -1,191 +1,197 @@
-/* Dashboard values are calculated from the same localStorage data as Tasks and Habits. */
+/* Dashboard metrics and charts use the same localStorage data as Tasks and Habits. */
 const readStore = (key) => {
   try {
-    return JSON.parse(localStorage.getItem(key) || "[]");
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
   } catch {
     return [];
   }
 };
+const $ = (id) => document.getElementById(id);
 const dayKey = (date) => {
   const d = new Date(date);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
-function renderDashboard() {
-  const tasks = readStore("tasks"),
-    habits = readStore("habits"),
-    today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const since = new Date(today);
-  since.setDate(since.getDate() - 6);
-  const completed = tasks.filter(
-    (t) =>
-      t.status === "completed" &&
-      (() => {
-        const d = t.completedAt || t.completedOn || t.updatedAt;
-        return d ? new Date(d) >= since : false;
-      })(),
-  );
-  const overdue = tasks.filter(
-    (t) =>
-      t.status !== "completed" &&
-      (t.dueDate || t.due_date) &&
-      new Date((t.dueDate || t.due_date) + "T23:59:59") < new Date(),
-  );
-  $("completed-count").textContent = completed.length;
-  $("overdue-count").textContent = overdue.length;
-  $("active-habits-count").textContent = habits.length;
-  const streaks = habits
-    .map((h) => ({
-      name: h.name || h.title || "Habit",
-      streak: Number(h.streak || h.currentStreak || h.longestStreak || 0),
-    }))
-    .sort((a, b) => b.streak - a.streak);
-  $("longest-streak").textContent = `${streaks[0]?.streak || 0} days`;
-  $("longest-streak-name").textContent =
-    streaks[0]?.name || "Across all habits";
+
+function renderStatusChart(tasks) {
   const statuses = [
-    { key: "active", label: "Active", color: "#27b77b" },
-    { key: "in-progress", label: "In progress", color: "#e5a23b" },
-    { key: "stalled", label: "Stalled", color: "#ed6868" },
-    { key: "completed", label: "Completed", color: "#7b8ba6" },
+    {
+      key: "todo",
+      label: "Todo",
+      color: "#b5b5b5",
+      aliases: ["todo", "to-do", "active"],
+    },
+    {
+      key: "on-hold",
+      label: "On hold",
+      color: "#f9a008",
+      aliases: ["on hold", "on-hold", "stalled"],
+    },
+    {
+      key: "in-progress",
+      label: "In progress",
+      color: "#3d82ff",
+      aliases: ["in progress", "in-progress"],
+    },
+    {
+      key: "completed",
+      label: "Completed",
+      color: "#10b981",
+      aliases: ["completed", "complete", "done"],
+    },
   ];
-  const counts = statuses.map((s) => ({
-      ...s,
-      count: tasks.filter((t) => t.status === s.key).length,
-    })),
-    total = tasks.length;
+  const counts = statuses.map((status) => ({
+    ...status,
+    count: tasks.filter((task) =>
+      status.aliases.includes(String(task.status || "").toLowerCase()),
+    ).length,
+  }));
+  const total = tasks.length;
   $("total-tasks").textContent = total;
+
   let cursor = 0;
-  const segments = counts.map((s) => {
+  const segments = counts.map((status) => {
     const start = total ? (cursor / total) * 100 : 0;
-    cursor += s.count;
-    return `${s.color} ${start}% ${total ? (cursor / total) * 100 : 100}%`;
+    cursor += status.count;
+    return `${status.color} ${start}% ${total ? (cursor / total) * 100 : 100}%`;
   });
   $("status-donut").style.background = total
     ? `conic-gradient(${segments.join(",")})`
     : "var(--soft)";
   $("status-legend").innerHTML = counts
     .map(
-      (s) =>
-        `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span>${s.label}<strong>${s.count}</strong></div>`,
+      (status) =>
+        `<div class="legend-item"><span class="legend-dot" style="background:${status.color}"></span><span>${status.label} - ${status.count}</span></div>`,
     )
     .join("");
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    days.push(d);
-  }
-  const values = days.map((d) => {
-    const key = dayKey(d);
-    return habits.reduce(
-      (sum, h) =>
-        sum +
-        (Array.isArray(h.completions)
-          ? h.completions.filter((x) => dayKey(x.date || x) === key).length
-          : 0),
-      0,
-    );
-  });
-  // Also accept a simple completedDates array on each habit record.
-  days.forEach((d, i) => {
-    const key = dayKey(d);
-    values[i] += habits.reduce(
-      (sum, h) =>
-        sum +
-        (Array.isArray(h.completedDates)
-          ? h.completedDates.filter((x) => dayKey(x) === key).length
-          : 0),
-      0,
-    );
-  });
-  const chartWidth = 700,
-    chartHeight = 190,
-    padX = 34,
-    padY = 24;
-  const max = Math.max(1, ...values),
-    step = (chartWidth - padX * 2) / 6;
-  const points = values.map((value, index) => ({
-    x: padX + index * step,
-    y: chartHeight - padY - (value / max) * (chartHeight - padY * 2),
-  }));
-  const grid = [0, 1, 2, 3]
-    .map((index) => {
-      const y = padY + (index * (chartHeight - padY * 2)) / 3;
-      return `<line x1="${padX}" y1="${y}" x2="${chartWidth - padX}" y2="${y}" class="chart-grid-line" />`;
-    })
-    .join("");
-  const line = points.map((point) => `${point.x},${point.y}`).join(" ");
-  const dots = points
+}
+
+function renderTrendChart(days, values) {
+  const width = 560;
+  const height = 300;
+  const left = 48;
+  const right = 16;
+  const top = 18;
+  const bottom = 42;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const maxValue = Math.max(4, ...values, 1);
+  const yMax = Math.max(4, Math.ceil(maxValue));
+  const x = (index) => left + (index * plotWidth) / 6;
+  const y = (value) => top + plotHeight - (value / yMax) * plotHeight;
+  const grid = Array.from({ length: yMax + 1 }, (_, index) => {
+    const yy = y(index);
+    return `<line class="chart-gridline" x1="${left}" y1="${yy}" x2="${width - right}" y2="${yy}"/><text class="chart-label" text-anchor="end" x="${left - 9}" y="${yy + 4}">${index}</text>`;
+  }).join("");
+  const xLabels = days
     .map(
-      (point, index) =>
-        `<circle cx="${point.x}" cy="${point.y}" r="4" class="chart-point"><title>${days[index].toLocaleDateString()} : ${values[index]} completions</title></circle>`,
+      (date, index) =>
+        `<text class="chart-label" text-anchor="middle" x="${x(index)}" y="${height - 20}">${date.toLocaleDateString(undefined, { weekday: "short" })}</text>`,
     )
     .join("");
-  const labels = days
+  const points = values
+    .map((value, index) => `${x(index)},${y(value)}`)
+    .join(" ");
+  const circles = values
     .map(
-      (day, index) =>
-        `<text x="${points[index].x}" y="${chartHeight - 3}" class="chart-day-label">${day.toLocaleDateString(undefined, { weekday: "short" })}</text>`,
-    )
-    .join("");
-  const valueLabels = points
-    .map(
-      (point, index) =>
-        `<text x="${point.x}" y="${Math.max(13, point.y - 10)}" class="chart-value-label">${values[index]}</text>`,
+      (value, index) =>
+        `<circle class="chart-point" cx="${x(index)}" cy="${y(value)}" r="4.2"/>`,
     )
     .join("");
   $("trend-chart").innerHTML =
-    `<svg class="trend-line-svg" viewBox="0 0 ${chartWidth} ${chartHeight}" role="img" aria-label="Line chart of habit completions over the last seven days">${grid}<polyline points="${line}" class="trend-line" />${dots}${valueLabels}${labels}</svg>`;
-  const recent = [
-    ...tasks.map((t) => ({
-      name: t.title || t.name || "Untitled task",
-      type: "Task",
-      date: t.updatedAt || t.completedAt || t.dueDate || "",
-    })),
-    ...habits.map((h) => ({
-      name: h.name || h.title || "Untitled habit",
-      type: "Habit",
-      date: h.updatedAt || "",
-    })),
-  ]
-    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
-    .slice(0, 5);
-  $("recent-activity").innerHTML = recent.length
-    ? recent
-        .map(
-          (x) =>
-            `<div class="recent-item"><span>${safe(x.name)} <small>· ${x.type}</small></span><small>${x.date ? safe(String(x.date).slice(0, 10)) : "Tracked"}</small></div>`,
-        )
-        .join("")
-    : '<div class="recent-empty">No activity yet. Add a task or habit to get started.</div>';
+    `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Habit completions over the past seven days"><g>${grid}</g><line class="chart-axis" x1="${left}" y1="${top}" x2="${left}" y2="${height - bottom}"/><line class="chart-axis" x1="${left}" y1="${height - bottom}" x2="${width - right}" y2="${height - bottom}"/><polyline class="chart-line" points="${points}"/>${circles}${xLabels}<text class="chart-y-label" text-anchor="middle" transform="translate(13 ${top + plotHeight / 2}) rotate(-90)">Total habits</text></svg>`;
 }
-function safe(v) {
-  return String(v).replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ],
+
+function renderDashboard() {
+  const tasks = readStore("tasks");
+  const habits = readStore("habits");
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const since = new Date(today);
+  since.setDate(since.getDate() - 6);
+
+  const completed = tasks.filter((task) => {
+    if (String(task.status || "").toLowerCase() !== "completed") return false;
+    const date = task.completedAt || task.completedOn || task.updatedAt;
+    return date ? new Date(date) >= since : false;
+  });
+  const overdue = tasks.filter((task) => {
+    const dueDate = task.dueDate || task.due_date;
+    return (
+      String(task.status || "").toLowerCase() !== "completed" &&
+      dueDate &&
+      new Date(`${dueDate}T23:59:59`) < new Date()
+    );
+  });
+
+  $("completed-count").textContent = completed.length;
+  $("overdue-count").textContent = overdue.length;
+  $("active-habits-count").textContent = habits.filter(
+    (habit) => habit.active !== false,
+  ).length;
+
+  /* Find the highest streak value among all habits. */
+  const streaks = readStore("habitStreaks");
+
+  const longestHabit = streaks.reduce(
+    (best, habit) => (habit.streak > best.streak ? habit : best),
+    { name: "", streak: 0 },
   );
+
+  $("longest-streak").textContent =
+    `${longestHabit.streak} ${longestHabit.streak === 1 ? "day" : "days"}`;
+
+  $("longest-streak-name").textContent =
+    longestHabit.name || "Across all habits";
+
+  renderStatusChart(tasks);
+
+  const days = [];
+  for (let offset = 6; offset >= 0; offset--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - offset);
+    days.push(date);
+  }
+  const values = days.map((date) => {
+    const key = dayKey(date);
+    return habits.reduce((sum, habit) => {
+      const completions = Array.isArray(habit.completions)
+        ? habit.completions.filter(
+            (entry) => dayKey(entry.date || entry) === key,
+          ).length
+        : 0;
+      const completedDates = Array.isArray(habit.completedDates)
+        ? habit.completedDates.filter((entry) => dayKey(entry) === key).length
+        : 0;
+      return sum + completions + completedDates;
+    }, 0);
+  });
+  renderTrendChart(days, values);
 }
-const $ = (id) => document.getElementById(id);
+
 function setDashboardTheme() {
   const theme =
-    localStorage.getItem("app_theme") ||
     localStorage.getItem("theme") ||
+    localStorage.getItem("app_theme") ||
     "light";
   document.body.dataset.theme = theme;
-  document.body.classList.toggle("dark", theme === "dark");
-  $("theme-image").src =
-    `../assets/${theme === "dark" ? "light_theme_icon.svg" : "dark_theme_icon.svg"}`;
+  const icon = $("theme-image");
+  if (icon) {
+    icon.src =
+      theme === "dark"
+        ? "../assets/light_theme_icon.svg"
+        : "../assets/dark_theme_icon.svg";
+  }
 }
+
 $("theme-button").addEventListener("click", () => {
-  const next = document.body.dataset.theme === "dark" ? "light" : "dark";
-  localStorage.setItem("app_theme", next);
-  localStorage.setItem("theme", next);
+  const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", nextTheme);
+  localStorage.setItem("app_theme", nextTheme);
   setDashboardTheme();
 });
 window.addEventListener("storage", renderDashboard);
 window.addEventListener("app-data-changed", renderDashboard);
+window.addEventListener("app-rules-changed", renderDashboard);
 setDashboardTheme();
 renderDashboard();
