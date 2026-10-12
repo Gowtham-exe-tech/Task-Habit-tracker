@@ -1,0 +1,185 @@
+/* Shared design tokens copied from the Tasks and Habits styling. */
+:root {
+  --primary-color: #55bd9b;
+  --primary-hover: #49ae8e;
+  --page-background: #fff;
+  --card-background: #fff;
+  --text-primary: #202124;
+  --text-secondary: #858795;
+  --border-color: #e2e2e2;
+  --danger-color: #ed3150;
+  --muted-background: #f0f1f3;
+  --card-radius: 14px;
+}
+body.dark {
+  --page-background: #111;
+  --card-background: #171717;
+  --text-primary: #eee;
+  --text-secondary: #999aa3;
+  --border-color: #333;
+  --muted-background: #222;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  min-height: 100vh;
+  background: var(--page-background);
+  color: var(--text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.page {
+  min-height: 100vh;
+  background: var(--page-background);
+}
+.header {
+  padding: 42px 4.2% 0;
+}
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand h1 {
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+.brand p {
+  margin-top: 13px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.theme-button {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-background);
+  color: var(--text-primary);
+}
+.theme-button:hover {
+  background: var(--muted-background);
+}
+.theme-button img {
+  width: 19px;
+  height: 19px;
+}
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  margin-top: 27px;
+  border-bottom: 1px solid var(--page-background);
+}
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  color: var(--text-primary);
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-link img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+}
+.nav-link.active {
+  color: var(--primary-color);
+}
+.nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+.nav-link.active:after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--primary-color);
+  content: "";
+}
+.main-content {
+  padding: 20px 4.2% 60px;
+}
+body.dark .nav-link img,
+body.dark .theme-button img {
+  filter: brightness(0) invert(1);
+}
+body.dark .nav-link.active img {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(27%) saturate(699%)
+    hue-rotate(107deg) brightness(94%) contrast(88%);
+}
+@media (max-width: 800px) {
+  .header {
+    padding: 25px 20px 0;
+  }
+  .brand h1 {
+    font-size: 23px;
+  }
+  .brand p {
+    max-width: 500px;
+    line-height: 1.5;
+  }
+  .navigation {
+    gap: 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .main-content {
+    padding: 18px 20px 40px;
+  }
+}
+@media (max-width: 500px) {
+  .header {
+    padding: 22px 14px 0;
+  }
+  .header-content {
+    gap: 15px;
+  }
+  .brand h1 {
+    font-size: 20px;
+  }
+  .brand p {
+    font-size: 12px;
+  }
+  .theme-button {
+    flex-shrink: 0;
+  }
+  .navigation {
+    gap: 12px;
+  }
+  .nav-link {
+    font-size: 12px;
+    gap: 5px;
+  }
+  .nav-link img {
+    width: 15px;
+    height: 15px;
+  }
+  .main-content {
+    padding: 16px 14px 35px;
+  }
+}

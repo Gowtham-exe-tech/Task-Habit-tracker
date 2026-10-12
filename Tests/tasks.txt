@@ -1,0 +1,55 @@
+Open page -> empty state appear
+click Add Task 
+create a Task
+refresh browser-> task should still exit
+change status
+edit task
+delete task
+search Task
+filter by status
+filter by priority
+sort by due date
+expand subtasks
+add a subtask
+check the subtask
+toggle dark mode
+refresh dark mode(same theme)
+
+
+bugs(fixed):
+- use the assesstes folder svg real icons
+- action completed notification
+- clear filter option
+- move up, move down button
+- drag and drop not working for both tasks and subtasks
+- subtask icon arrow changes when task added
+- for subtasks there is no edit, delete, move up, move down and drag order options 
+- in subtasks when i create a new subtask and press enter it automatically closes
+- in subtask when i mark one as completed it automatically closes
+- add task card each field label should transform and position to the box border of div like in design 
+- icons color also change when change of theme
+
+new issuses:
+
+- notification position and design and content is not same as in desgin i given to you.
+- add task and edit task floating windows, input inital itself they in border fit, but i want intial in input box itslef, when i focus on the input box it down go up and fit in border box
+- when i click clear filters the sorted order gets cleared, it should not be cleared.
+- add empty dropdown when the user not use sort dropdown, then when user drag the task order by themselves, then it should show empty option in sort dropdown
+- in add task and edit task floating window submit button and save changes button size is big compared to cancel button
+- all dropdown which has angle-down-regular.svg is not correctly padded in that it stick close to the border box
+
+
+responsive issuses:
+
+- 841 - sort by break icon got congested with filters
+- 800 - sort go down but sort by icon and name are on left side and it dropdown is on right side
+- 600 - clear filters goes down the filters but it occupy the full line space but i need to redice its size if necesary and fit along with filters
+- 500 - add task and edit task pop up window , there submit button occupies whole window line and pushes the cnce button outside the window, but i need the cancel button to align in down side of submit or save changes button
+- 392 - navigation gets scrolling on x axis, but i like to reduce the size
+
+subtask issuse:
+- for edit subtask, i show a prompt window, instead, i change to inline edit option on the same field, 
+  - when i click edit in subtasks
+  - it got highlighted with primary hover color
+  - then i can edit task detail 
+  - then after edit if i press enter or click on any other place it got saved and updated

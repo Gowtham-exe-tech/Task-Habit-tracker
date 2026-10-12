@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rules - Task & Habit Tracker</title>
+    <link rel="stylesheet" href="../styles/rules.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-content">
+          <div class="brand">
+            <h1>Task &amp; Habit Tracker</h1>
+            <p>
+              Manage your tasks and build lasting habits with analytics and
+              custom rules
+            </p>
+          </div>
+          <button
+            class="theme-button"
+            id="theme-button"
+            type="button"
+            aria-label="Change theme">
+            <img id="theme-image" src="../assets/dark_theme_icon.svg" alt="" />
+          </button>
+        </div>
+        <nav class="navigation">
+          <a class="nav-link" href="dashboard.html">
+            <img src="../assets/dashboard_icon-light.svg" alt="" />Dashboard
+          </a>
+          <a class="nav-link" href="tasks.html">
+            <img src="../assets/Task_icon-light.svg" alt="" />Tasks
+          </a>
+          <a class="nav-link" href="habits.html">
+            <img src="../assets/habbit_icon-light.svg" alt="" />Habits
+          </a>
+          <a class="nav-link active" href="rules.html">
+            <img src="../assets/rule_icon-light.svg" alt="" />Rules
+          </a>
+        </nav>
+      </header>
+
+      <main class="main-content">
+        <section class="toolbar">
+          <div>
+            <h2>Rules</h2>
+            <p>
+              Create conditions that automatically highlight tasks and celebrate
+              habit streaks.
+            </p>
+          </div>
+          <button class="primary-button" id="add-rule">＋ Add Rule</button>
+        </section>
+
+        <section class="filters">
+          <label>
+            Search
+            <input
+              id="rule-search"
+              type="search"
+              placeholder="Search rules..." />
+          </label>
+          <label>
+            Status
+            <select id="rule-status">
+              <option value="all">All rules</option>
+              <option value="enabled">Enabled</option>
+              <option value="disabled">Disabled</option>
+            </select>
+          </label>
+          <label>
+            Sort by
+            <select id="rule-sort">
+              <option value="priority">Priority order</option>
+              <option value="title">Alphabetical title</option>
+              <option value="hits">Most matches</option>
+            </select>
+          </label>
+        </section>
+
+        <section
+          id="rules-list"
+          class="rules-list"
+          aria-live="polite">
+        </section>
+
+        <section id="rules-empty" class="empty-state">
+          <div class="empty-icon">◇</div>
+          <h3>No rules yet</h3>
+          <p>
+            Create your first rule to automate visual alerts and habit milestone
+            rewards.
+          </p>
+          <button class="primary-button" id="empty-add-rule">
+            ＋ Create your first rule
+          </button>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="rule-modal" hidden>
+      <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rule-modal-title">
+        <div class="modal-heading">
+          <h2 id="rule-modal-title">Add Rule</h2>
+          <button class="icon-button" id="close-rule-modal" aria-label="Close">
+            ×
+          </button>
+        </div>
+
+        <form id="rule-form">
+          <label>
+            Rule name
+            <input
+              id="rule-name"
+              required
+              maxlength="70"
+              placeholder="e.g. Urgent task alert" />
+          </label>
+
+          <label>
+            Description
+            <textarea
+              id="rule-description"
+              rows="2"
+              placeholder="What should this rule do?">
+            </textarea>
+          </label>
+
+          <div class="form-section">
+            <h3>Condition (IF)</h3>
+            <div class="form-grid">
+              <label>
+                Item type
+                <select id="rule-entity">
+                  <option value="task">Task</option>
+                  <option value="habit">Habit</option>
+                  <option value="both">Task or habit</option>
+                </select>
+              </label>
+
+              <label>
+                Field
+                <select id="rule-field">
+                  <option value="priority">Priority</option>
+                  <option value="status">Status</option>
+                  <option value="dueDate">Due date</option>
+                  <option value="streak">Habit streak</option>
+                  <option value="frequency">Habit frequency</option>
+                </select>
+              </label>
+
+              <label>
+                Operator
+                <select id="rule-operator">
+                  <option value="equals">equals</option>
+                  <option value="notEquals">does not equal</option>
+                  <option value="greaterThan">greater than</option>
+                  <option value="lessThanOrEqual">less than or equal</option>
+                  <option value="contains">contains</option>
+                  <option value="isOverdue">is overdue</option>
+                </select>
+              </label>
+
+              <label>
+                Value
+                <input
+                  id="rule-value"
+                  placeholder="High, active, 7..."
+                  required />
+              </label>
+            </div>
+            <p class="helper">
+              Use values like High, active, daily, or a number of days/streaks.
+              For due date, use a date or choose “is overdue”.
+            </p>
+          </div>
+
+          <div class="form-section">
+            <h3>Action (THEN)</h3>
+            <div class="form-grid">
+              <label>
+                Action
+                <select id="rule-action">
+                  <option value="highlight-red">Highlight red</option>
+                  <option value="highlight-yellow">Highlight yellow</option>
+                  <option value="badge">Show badge</option>
+                  <option value="tag">Add tag</option>
+                </select>
+              </label>
+
+              <label>
+                Action label
+                <input
+                  id="rule-action-label"
+                  placeholder="Urgent / 7-day streak" />
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="secondary-button" type="button" id="cancel-rule">
+              Cancel
+            </button>
+            <button class="primary-button" type="submit" id="save-rule">
+              Save Rule
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="toast" class="toast" role="status"></div>
+
+    <script src="../logic/rules.js"></script>
+    <script src="../logic/integration.js"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habits - Task & Habit Tracker</title>
+    <link rel="stylesheet" href="../styles/habits.css" />
+  </head>
+  <body>
+    <!-- Main page keeps the same shared header and navigation as the task page. -->
+    <div class="page">
+      <header class="header">
+        <div class="header-content">
+          <div class="brand">
+            <h1>Task &amp; Habit Tracker</h1>
+            <p>Manage your tasks and build lasting habits with analytics and custom rules</p>
+          </div>
+          <button class="theme-button" id="theme-button" type="button" aria-label="Change theme">
+            <span id="theme-icon"><img class="theme-icon-image" src="../assets/dark_theme_icon.svg" alt=""></span>
+          </button>
+        </div>
+        <nav class="navigation">
+          <a href="dashboard.html" class="nav-link"><img src="../assets/dashboard_icon-light.svg" alt="">Dashboard</a>
+          <a href="tasks.html" class="nav-link"><img src="../assets/Task_icon-light.svg" alt="">Tasks</a>
+          <a href="habits.html" class="nav-link active" aria-current="page"><img src="../assets/habbit_icon-light.svg" alt="">Habits</a>
+          <a href="rules.html" class="nav-link"><img src="../assets/rule_icon-light.svg" alt="">Rules</a>
+        </nav>
+      </header>
+
+      <main class="main-content">
+        <!-- Filters and sorting stay on one line when space allows. -->
+        <section class="filter-section">
+          <div class="filter-left">
+            <span class="filter-label"><img src="../assets/filter_icon.svg" alt="" class="inline-icon">Filters:</span>
+            <select id="frequency-filter" class="filter-select" aria-label="Filter by frequency">
+              <option value="all">All Frequency</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="custom">Custom</option>
+            </select>
+            <button class="clear-filters-button" id="clear-filters-button" type="button">Clear filters</button>
+          </div>
+          <div class="sort-section">
+            <span class="sort-label"><img src="../assets/sort_icon.svg" alt="" class="inline-icon">Sort by:</span>
+            <select id="sort-select" class="filter-select sort-select" aria-label="Sort habits">
+              <option value=""></option>
+              <option value="streak">Streak</option>
+              <option value="frequency">Frequency</option>
+              <option value="title">Habit name</option>
+              <option value="created">Created date</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="task-heading">
+          <h2>Habits</h2>
+          <div class="task-actions">
+            <div class="search-box">
+              <img src="../assets/search_icon.svg" alt="" class="inline-icon">
+              <input type="search" id="search-input" placeholder="Search" aria-label="Search habits by name">
+            </div>
+            <button class="primary-button" id="add-habit-button" type="button">
+              <img src="../assets/add_icon.svg" alt="" class="inline-icon">Add habit
+            </button>
+          </div>
+        </section>
+
+        <section class="task-list" id="habit-list" aria-live="polite">
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon"><img src="../assets/long-streek_icon.svg" alt=""></div>
+            <p>No habits found. Create your first habit to get started!</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add and edit use the same floating-label modal pattern as the task page. -->
+    <div class="modal-overlay" id="habit-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <div>
+            <h2 id="modal-title">Add habit</h2>
+            <p>Create a new habit to track daily, weekly, or on custom days.</p>
+          </div>
+          <button class="close-button" id="close-modal-button" type="button" aria-label="Close"><img src="../assets/close_icon.svg" alt=""></button>
+        </div>
+        <form id="habit-form">
+          <div class="form-content">
+            <div class="form-group">
+              <label for="habit-name">Habit name <span>*</span></label>
+              <input type="text" id="habit-name" placeholder=" " maxlength="100" required>
+            </div>
+            <div class="form-group">
+              <label for="habit-description">Description</label>
+              <textarea id="habit-description" placeholder=" " rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="habit-frequency">Frequency <span>*</span></label>
+              <select id="habit-frequency" required>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="form-group frequency-days" id="weekly-day-group">
+              <label for="weekly-day">Choose day <span>*</span></label>
+              <select id="weekly-day">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="0">Sunday</option>
+              </select>
+            </div>
+            
+            <div class="form-group frequency-days" id="custom-days-group">
+                <label for="custom-days-toggle">Choose days <span>*</span></label>
+
+                <div class="custom-multiselect" id="custom-multiselect">
+                    <button type="button" class="custom-select-field" id="custom-days-toggle" aria-expanded="false">
+                    <span class="selected-day-chips" id="selected-day-chips"></span>
+                    <span class="custom-placeholder" id="custom-placeholder">Select days</span>
+                    <img src="../assets/angle-down-regular.svg" class="custom-chevron">
+                    </button>
+
+                    <div class="custom-options" id="custom-day-choices" hidden>
+                        <label class="day-choice"><input type="checkbox" value="1"> Monday</label>
+                        <label class="day-choice"><input type="checkbox" value="2"> Tuesday</label>
+                        <label class="day-choice"><input type="checkbox" value="3"> Wednesday</label>
+                        <label class="day-choice"><input type="checkbox" value="4"> Thursday</label>
+                        <label class="day-choice"><input type="checkbox" value="5"> Friday</label>
+                        <label class="day-choice"><input type="checkbox" value="6"> Saturday</label>
+                        <label class="day-choice"><input type="checkbox" value="0"> Sunday</label>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="secondary-button" id="cancel-modal-button" type="button">Cancel</button>
+            <button class="primary-button" type="submit"><span id="submit-text">Add habit</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete confirmation follows the same design as the task page. -->
+    <div class="modal-overlay" id="delete-modal" aria-hidden="true">
+      <div class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-heading">
+        <div class="delete-header">
+          <h2 id="delete-heading">Delete</h2>
+          <button class="close-button" id="close-delete-button" type="button" aria-label="Close"><img src="../assets/close_icon.svg" alt=""></button>
+        </div>
+        <div class="delete-content"><p>Are you sure you want to delete the <strong id="delete-habit-title"></strong> habit?</p></div>
+        <div class="modal-footer">
+          <button class="secondary-button" id="cancel-delete-button" type="button">Cancel</button>
+          <button class="delete-button" id="confirm-delete-button" type="button">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation before changing a completion from a previous date. -->
+    <div class="modal-overlay" id="date-confirm-modal" aria-hidden="true">
+      <div class="delete-modal habit-day-confirmation" role="dialog" aria-modal="true" aria-labelledby="date-confirm-heading">
+        <div class="delete-header">
+          <h2 id="date-confirm-heading">Confirm change</h2>
+          <button class="close-button" id="close-date-confirm-button" type="button" aria-label="Close"><img src="../assets/close_icon.svg" alt=""></button>
+        </div>
+        <div class="delete-content">
+          <p id="date-confirm-message">Are you sure you want to change completion for this date?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="secondary-button" id="cancel-date-confirm-button" type="button">Cancel</button>
+          <button class="primary-button" id="confirm-date-change-button" type="button">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small notification used for successful actions and validation messages. -->
+    <div class="task-toast" id="task-toast" role="status" aria-live="polite">
+      <span class="toast-icon-block"><img class="toast-icon" src="../assets/subway_tick.svg" alt=""></span>
+      <span class="toast-message" id="toast-message"></span>
+      <button class="toast-dismiss" id="toast-dismiss" type="button" aria-label="Dismiss notification"><img src="../assets/close_icon.svg" alt=""></button>
+    </div>
+    <script src="../logic/habits.js"></script>
+    <script src="../logic/integration.js"></script>
+  </body>
+</html>

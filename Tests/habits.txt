@@ -1,0 +1,16 @@
+issuse
+
+ - in edit habit and add habit when i slect custom the days to choose options are gets congested and overlapped with ech other not like in design, i can choose days i want
+ - follow how the sort by works in tasks , like sort by inital should have empty dropdown, or i change the order by b=drag drop it should be empty
+ - clear filter should not clear the sort by
+ 
+ design issuse
+ - the no habits inital page "No habits found. Create your first habit to get started!" the icon is not as in design, use the icon used in streak badge 
+ -  in visual bar date should only be in inside box, the day name, under the box like in design
+ - remove the completed, not oompleted, upcoming/not scheduled these three under visual box, they are not in design 
+ - icon change in daily, weekly, custom showing in habit card use clendar icon like in image for adaptable for both light and dark theme
+ - frequency selcted and streak should be in rounded box design like in design
+ - the notification messages should be exactly like in figma design
+
+new one
+- custom days option overlaping

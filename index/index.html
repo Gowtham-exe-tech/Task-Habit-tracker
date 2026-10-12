@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task & Habit Tracker</title>
+    <style>
+      :root {
+        font-family: Arial, sans-serif;
+        color: #242a33;
+        background: #f7f8fa;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .wrap {
+        width: min(1000px, calc(100% - 32px));
+        margin: 60px auto;
+      }
+
+      .wrap h1 {
+        margin-bottom: 8px;
+      }
+
+      .wrap p {
+        color: #737b89;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 28px;
+      }
+
+      .card {
+        display: block;
+        background: white;
+        border: 1px solid #e3e6eb;
+        border-radius: 12px;
+        padding: 24px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.15s, box-shadow 0.15s;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px #0000000c;
+      }
+
+      .card h2 {
+        margin: 0 0 8px;
+      }
+
+      .card p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .tag {
+        display: inline-block;
+        color: #16875a;
+        background: #e0f7ec;
+        border-radius: 20px;
+        padding: 5px 9px;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .wrap {
+          margin: 32px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>Task &amp; Habit Tracker</h1>
+      <p>
+        Choose a section to open your tracker. All four pages use shared
+        browser storage.
+      </p>
+
+      <section class="grid">
+        <a class="card" href="dashboard.html">
+          <h2>Dashboard</h2>
+          <p>Review task status, weekly progress, overdue tasks, and habit streaks.</p>
+        </a>
+
+        <a class="card" href="tasks.html">
+          <h2>Tasks</h2>
+          <p>Create, organize, filter, and complete your tasks.</p>
+        </a>
+
+        <a class="card" href="habits.html">
+          <h2>Habits</h2>
+          <p>Track daily, weekly, and custom-frequency habits.</p>
+        </a>
+
+        <a class="card" href="rules.html">
+          <h2>Rules</h2>
+          <p>Set conditional highlights and milestone labels for tasks and habits.</p>
+        </a>
+      </section>
+    </main>
+  </body>
+</html>

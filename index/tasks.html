@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks - Task & Habit Tracker</title>
+    <link rel="stylesheet" href="../styles/tasks.css" />
+  </head>
+  <body>
+    <!-- main page -->
+    <div class="page">
+      <!-- header -->
+      <header class="header">
+        <div class="header-content">
+          <div class="brand">
+            <h1>Task & Habit Tracker</h1>
+            <p>
+              Manage your tasks and build lasting habits with analytics and
+              custom rules
+            </p>
+          </div>
+
+          <button class="theme-button" id="theme-button" type="button" aria-label="Change theme">
+            <span id="theme-icon"><img class="theme-icon-image" src="../assets/dark_theme_icon.svg" alt=""></span>
+          </button>
+        </div>
+
+        <!-- navigation -->
+        <nav class="navigation">
+          <a href="dashboard.html" class="nav-link">
+            <img src="../assets/dashboard_icon-light.svg" alt="">
+            Dashboard
+          </a>
+
+          <a href="tasks.html" class="nav-link active">
+            <img src="../assets/Task_icon-light.svg" alt="">
+            Tasks
+          </a>
+
+          <a href="habits.html" class="nav-link">
+            <img src="../assets/habbit_icon-light.svg" alt="">
+            Habits
+          </a>
+
+          <a href="rules.html" class="nav-link">
+            <img src="../assets/rule_icon-light.svg" alt="">
+            Rules
+          </a>
+        </nav>
+      </header>
+
+      <main class="main-content">
+        <!-- filters -->
+        <section class="filter-section">
+          <div class="filter-left">
+            <span class="filter-label">
+              <img src="../assets/filter_icon.svg" alt="" class="inline-icon">
+              Filters:
+            </span>
+
+            <select id="status-filter" class="filter-select">
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="in-progress">In progress</option>
+              <option value="stalled">Stalled</option>
+              <option value="completed">Completed</option>
+            </select>
+
+            <select id="priority-filter" class="filter-select">
+              <option value="all">All Priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+            <button class="clear-filters-button" id="clear-filters-button" type="button">Clear filters</button>
+          </div>
+
+          <div class="sort-section">
+            <span class="sort-label"><img src="../assets/sort_icon.svg" alt="" class="inline-icon"> Sort by:</span>
+
+            <select id="sort-select" class="filter-select sort-select" aria-label="Sort tasks">
+              <option value=""> </option>
+              <option value="created">Created at</option>
+              <option value="due-date">Due date</option>
+              <option value="priority">Priority</option>
+              <option value="title">Title</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- task heading and controls -->
+        <section class="task-heading">
+          <h2>Tasks</h2>
+
+          <div class="task-actions">
+            <div class="search-box">
+              <img src="../assets/search_icon.svg" alt="" class="inline-icon">
+              <input type="search" id="search-input" placeholder="Search" />
+            </div>
+
+            <button class="primary-button" id="add-task-button" type="button">
+              <img src="../assets/add_icon.svg" alt="" class="inline-icon">
+              Add task
+            </button>
+          </div>
+        </section>
+
+        <!-- task list -->
+        <section class="task-list" id="task-list">
+          <!-- empty state -->
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon"><img src="../assets/clipboard_icon.svg" alt=""></div>
+
+            <p>No tasks found. Create your first task to get started!</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- add/edit task modal -->
+    <div class="modal-overlay" id="task-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <h2 id="modal-title">Add task</h2>
+            <p>Add a new task with details, priority, and due date.</p>
+          </div>
+
+          <button class="close-button" id="close-modal-button" type="button" aria-label="Close"><img src="../assets/close_icon.svg" alt=""></button>
+        </div>
+
+        <form id="task-form">
+          <div class="form-content">
+            <div class="form-group">
+              <label for="task-title">Task title <span>*</span></label>
+              <input type="text" id="task-title" placeholder=" " required />
+            </div>
+
+            <div class="form-group">
+              <label for="task-description">Description</label>
+              <textarea id="task-description" placeholder=" "></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="task-due-date">Due date <span>*</span></label>
+              <input type="date" id="task-due-date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="task-priority">Priority <span>*</span></label>
+              <select id="task-priority" required>
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="task-status">Status <span>*</span></label>
+              <select id="task-status" required>
+                <option value="active">Active</option>
+                <option value="in-progress">In progress</option>
+                <option value="stalled">Stalled</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="secondary-button" id="cancel-modal-button" type="button">
+              Cancel
+            </button>
+
+            <button class="primary-button" type="submit">
+              <span id="submit-text">Submit</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- delete confirmation -->
+    <div class="modal-overlay" id="delete-modal">
+      <div class="delete-modal">
+        <div class="delete-header">
+          <h2>Delete</h2>
+
+          <button class="close-button" id="close-delete-button" type="button" aria-label="Close"><img src="../assets/close_icon.svg" alt=""></button>
+        </div>
+
+        <div class="delete-content">
+          <p>
+            Are you sure you want to delete the
+            <strong id="delete-task-title"></strong> task?
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button class="secondary-button" id="cancel-delete-button" type="button">
+            Cancel
+          </button>
+
+          <button class="delete-button" id="confirm-delete-button" type="button">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../logic/tasks.js"></script>
+    <script src="../logic/integration.js"></script>
+  </body>
+</html>
+
